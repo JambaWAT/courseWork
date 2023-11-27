@@ -1,70 +1,64 @@
-public class Main {
-    static Employee[] employees = new Employee[10];
+import java.security.PublicKey;
 
-    public static void main(String[] args) {
-        employees[0] = new Employee("Bilbo1", "Beggins", "Robber", 1000, 1);
-        employees[1] = new Employee("Frodo2", "Beggins", "Robber", 70000, 2);
-        employees[2] = new Employee("marko3", "Beggins", "Robber", 103210, 4);
-        employees[3] = new Employee("polo4", "Beggins", "Robber", 134000, 3);
-        employees[4] = new Employee("Frin5", "Beggins", "Robber", 440, 5);
-        employees[5] = new Employee("mixe6", "Beggins", "Robber", 1220000, 2);
-        employees[6] = new Employee("fruze7", "Beggins", "Robber", 766000, 1);
-        employees[7] = new Employee("gazuze8", "Beggins", "Robber", 74124, 2);
-        employees[8] = new Employee("garuze9", "Beggins", "Robber", 74236000, 3);
-        employees[9] = new Employee("grfeg10", "Beggins", "Robber", 7633000, 5);
+public class EmployeeBook {
+    public final Employee[] employees;
 
-        printEmployees();
-        System.out.println("--------------------");
-        System.out.println(sumSalary());
-        System.out.println("--------------------");
+    public EmployeeBook(int size) {
+        this.employees = new Employee[size];
+    }
+    public void add(Employee employee){
+        for (int i = 0; i < employees.length; i++){
+            if (employees[i] == null){
+                employees[i] = employee;
+                return;
+            }
+        }
+        System.out.println("Места нет");
+    }
+    public void del(int id) {
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i].getId() == id) {
+                employees[i] = null;
+                return;
+            }
+            System.out.println("Такого работника нет");
+        }
+    }
+    public void modify (String fio, Integer newSalary, Integer newDepartment ){
+        for (int i = 0; i < employees.length; i++){
+            if(employees[i].fio().equals(fio)) {
+                if(newSalary != null){
+                    employees[i].setSalary(newSalary);
+                }
+                if(newDepartment!=null){
+                    employees[i].setDepartment(newDepartment);
+                }
 
-        System.out.println(minSalary());
-        System.out.println("--------------------");
-
-        System.out.println(maxSalary());
-        System.out.println("--------------------");
-
-        System.out.println(averegeSalary());
-        System.out.println("--------------------");
-
-        printEmployeeFio();
-        System.out.println("--------------------");
-
-        System.out.println(minSalary(2));
-        System.out.println("--------------------");
-
-        indexSalary(0.2);
-        System.out.println("--------------------");
-
-        printEmployees();
-        System.out.println("--------------------");
-
-        System.out.println(maxSalary(1));
-        System.out.println("--------------------");
-
-        System.out.println(minSalary(2));
-        System.out.println("--------------------");
-
-        System.out.println(sumSalary(2));
-        System.out.println("--------------------");
-
-        print(5);
-        System.out.println("--------------------");
-
-        printSalLess(1000);
-        System.out.println("--------------------");
-        printSalGTE(74124);
-        System.out.println("--------------------");
-        System.out.println(averegeSalary(3));
-
+            }
+        }
 
     }
-    private static void printEmployees() {
+    public void printByDep(){
+        for (int i = 1; i <= 5 ; i++) {
+            System.out.println("Отдел: "+i++);
+            for (int j = 0; j < employees.length ; j++) {
+                if(employees[j].getDepartment() == i){
+                    System.out.println('\t'+employees[j].fio());
+                }
+
+            }
+
+        }
+    }
+
+
+    public void printEmployees() {
         for (Employee employee : employees) {
             System.out.println(employee);
         }
     }
-    private static int sumSalary() {
+
+    public   int sumSalary() {
         int sum = 0;
         for (Employee employee : employees) {
             sum += employee.getSalary();
@@ -72,7 +66,7 @@ public class Main {
         return sum;
     }
 
-    private static int sumSalary(int department) {
+    public   int sumSalary(int department) {
         int sum = 0;
         for (Employee employee : employees) {
             if (employee.getDepartment() == department) {
@@ -82,7 +76,7 @@ public class Main {
         return sum;
     }
 
-    private static Employee minSalary() {
+    public   Employee minSalary() {
         Employee min = employees[0];
         for (Employee employee : employees) {
             if (employee.getSalary() < min.getSalary()) {
@@ -92,7 +86,7 @@ public class Main {
         return min;
     }
 
-    private static Employee minSalary(int department) {
+    public   Employee minSalary(int department) {
         Employee min = null;
         for (Employee employee : employees) {
             if (employee.getDepartment() != department) {
@@ -105,7 +99,7 @@ public class Main {
         return min;
     }
 
-    private static Employee maxSalary() {
+    public   Employee maxSalary() {
         Employee max = employees[0];
         for (Employee employee : employees) {
             if (employee.getSalary() > max.getSalary()) {
@@ -115,7 +109,7 @@ public class Main {
         return max;
     }
 
-    private static Employee maxSalary(int department) {
+    public   Employee maxSalary(int department) {
         Employee max = null;
         for (Employee employee : employees) {
             if (employee.getDepartment() == department) {
@@ -128,11 +122,11 @@ public class Main {
         return max;
     }
 
-    private static double averegeSalary() {
+    public   double averegeSalary() {
         return (double) sumSalary() / employees.length;
     }
 
-    private static double averegeSalary(int deparment) {
+    public   double averegeSalary(int deparment) {
         var sum = sumSalary(deparment);
         var count = 0;
         for (Employee employee : employees) {
@@ -143,20 +137,20 @@ public class Main {
         return count == 0 ? 0 : (double) sum / count;
     }
 
-    public static void printEmployeeFio() {
+    public   void printEmpNam() {
         for (Employee employee : employees) {
             System.out.println(employee.getFirstName() + " " + employee.getMiddleName() + " " + employee.getLastName());
         }
     }
 
-    private static void indexSalary(double percent) {
+    public   void indexSalary(double percent) {
         for (Employee employee : employees) {
             int newSalary = (int) (employee.getSalary() * (1 + percent));
             employee.setSalary(newSalary);
         }
     }
 
-    private static void indexSalary(double percent, int department) {
+    public   void indexSalary(double percent, int department) {
         for (Employee employee : employees) {
             if (employee.getDepartment() == department) {
                 int newSalary = (int) (employee.getSalary() * (1 + percent));
@@ -166,7 +160,7 @@ public class Main {
         }
     }
 
-    private static void print(int department) {
+    public   void print(int department) {
         for (Employee employee : employees) {
             if (employee.getDepartment() == department) {
                 System.out.println(employee.getId() + " " + employee.getLastName() + " " + employee.getFirstName() + " " + employee.getMiddleName() + ",  Зарплата=" + employee.getSalary());
@@ -174,14 +168,14 @@ public class Main {
         }
     }
 
-    private static void printSalLess(int salary) {
+    public   void printSalLess(int salary) {
         for (Employee employee : employees) {
             if (employee.getSalary() < salary) {
                 System.out.println(employee.inf());
             }
         }
     }
-    private static void printSalGTE(int salary) {
+    public   void printSalGTE(int salary) {
         for (Employee employee : employees) {
             if (employee.getSalary() > salary) {
                 System.out.println(employee.inf());
